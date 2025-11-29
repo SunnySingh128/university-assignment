@@ -7,6 +7,7 @@ const uploadAssignment = async (req, res) => {
     const data = await Assignment.create({
       email: req.body.email,
       title: req.body.title,
+      professor: req.body.professor,
       fileUrl: filePath,
       status: "Submitted"
     });
@@ -42,5 +43,82 @@ console.log(assignments);
     return res.status(500).json({ error: err.message });
   }
 };
+// Assuming you have models: Professor, Assignment, User
 
-module.exports={uploadAssignment,fetchPdf};
+async function fetchAllAssignments(req, res) {
+  try {
+    const { professor } = req.body;  // professor name comes from frontend, e.g., "suhani"
+console.log(professor);
+    // 1. Check if professor exists in ANY assignment
+    const professor1 = await Assignment.findOne({ professor: professor });
+
+    if (!professor1) {
+      return res.status(404).json({
+        success: false,
+        message: "Professor not found",
+      });
+    }
+
+    // 2. Fetch all assignments of this professor
+    const assignments = await Assignment.find({ professor: professor })
+      .select("email title fileUrl uploadedAt status");
+
+    if (!assignments || assignments.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No assignments found",
+      });
+    }
+
+    // 3. Return results
+    return res.json({
+      success: true,
+      total: assignments.length,
+      assignments,
+    });
+
+  } catch (error) {
+    console.log("Error fetching assignments:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+}
+
+async function fetchAllAssignments1(req, res) {
+  try {
+    const assignmentId = req.params.id;
+    const { status } = req.body;
+
+    // find assignment
+    const assignment = await Assignment.findById(assignmentId);
+
+    if (!assignment) {
+      return res.status(404).json({
+        success: false,
+        message: "Assignment not found",
+      });
+    }
+
+    // update status
+    assignment.status = status === "accepted" ? "accepted" : "rejected";
+
+    await assignment.save();
+
+    res.json({
+      success: true,
+      message: `Assignment ${assignment.status} successfully`,
+      updatedAssignment: assignment,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+}
+
+module.exports={uploadAssignment,fetchPdf,fetchAllAssignments,fetchAllAssignments1};

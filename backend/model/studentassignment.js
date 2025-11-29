@@ -18,6 +18,10 @@ const assignmentSchema = new mongoose.Schema({
     type: String,
     default: "Draft",
   },
+  professor:{
+    type:String,
+    required:true,
+  },
   uploadedAt: {
     type: Date,
     default: Date.now,

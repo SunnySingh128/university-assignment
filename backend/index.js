@@ -26,8 +26,9 @@ app.use("/admin",require("./routes/admin"));
 app.use("/store",require("./routes/user"));
 app.use("/student",require("./routes/student"));
 app.use("/auth",authroutes);
-app.use('/:filename', express.static(path.join(__dirname, './uploads')));
 
+app.use('/:filename', express.static(path.join(__dirname, './uploads')));
+app.use("/bulkupload",require("./routes/bulkupload.js"));
 // database connection
 connect(process.env.MONGO_URL).then(()=>{
     console.log("Connected to database");

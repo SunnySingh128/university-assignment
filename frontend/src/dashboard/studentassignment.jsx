@@ -82,9 +82,9 @@ export default function StudentAssignments() {
   const statusCounts = {
     All: assignments.length,
     Draft: assignments.filter(a => a.status === "Draft").length,
-    Submitted: assignments.filter(a => a.status === "Submitted").length,
-    Approved: assignments.filter(a => a.status === "Approved").length,
-    Rejected: assignments.filter(a => a.status === "Rejected").length,
+    Submitted: assignments.length,
+    Approved: assignments.filter(a => a.status === "accepted").length,
+    Rejected: assignments.filter(a => a.status === "rejected").length,
   };
 
   return (
@@ -99,7 +99,7 @@ export default function StudentAssignments() {
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={() => navigate('/student', { state: { email, password } })}
+            onClick={() => navigate('/', { state: { email, password } })}
             className="flex items-center text-blue-600 hover:text-blue-800 font-medium mb-6 transition-all duration-300 group"
           >
             <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
@@ -164,8 +164,8 @@ export default function StudentAssignments() {
                   <option value="All">All Status ({statusCounts.All})</option>
                   <option value="Draft">Draft ({statusCounts.Draft})</option>
                   <option value="Submitted">Submitted ({statusCounts.Submitted})</option>
-                  <option value="Approved">Approved ({statusCounts.Approved})</option>
-                  <option value="Rejected">Rejected ({statusCounts.Rejected})</option>
+                  <option value="accepted">Approved ({statusCounts.accepted})</option>
+                  <option value="rejected">Rejected ({statusCounts.rejected})</option>
                 </select>
               </div>
             </div>
@@ -227,7 +227,7 @@ export default function StudentAssignments() {
                         </td>
                         <td className="p-4 text-right">
                           <a
-                            href={assignment.fileUrl}
+                          href={`/api/${assignment.fileUrl}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"

@@ -39,6 +39,66 @@ async function getUser(req, res) {
     res.status(500).json({ message: "Server error", error });
   }
 }
+async function getAllProfessors(req, res) {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
+      });
+    }
+
+    // 1️⃣ Find student and get department
+    const student = await model.findOne(
+      { email },
+      { department: 1, _id: 0 }
+    );
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found"
+      });
+    }
+
+    const studentDept = student.department;
+
+    // 2️⃣ Find professors from same department
+    const professors = await model.find(
+      { role: "professor", department: studentDept },
+      { fullName: 1, _id: 0 }
+    );
+
+    if (professors.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No professors found in this department"
+      });
+    }
+
+    // 3️⃣ Return only professor names in array
+    const professorNames = professors.map(p => p.fullName);
+
+    res.status(200).json({
+      success: true,
+      department: studentDept,
+      professors: professorNames
+    });
+
+  } catch (error) {
+    console.error("Error fetching professors:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error
+    });
+  }
+}
+
+
+
 async function DeleteUser(req,res){
   try {
      try {
@@ -70,4 +130,4 @@ async function DeleteUser(req,res){
   res.status(500).json({message:"Server error",error});
 }
 }
-module.exports={getAllDepartments,getUser,DeleteUser};
+module.exports={getAllDepartments,getUser,DeleteUser,getAllProfessors};

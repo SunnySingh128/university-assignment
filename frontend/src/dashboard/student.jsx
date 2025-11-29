@@ -20,10 +20,12 @@ export default function StudentDashboard() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isLoadingDashboard, setIsLoadingDashboard] = useState(true);
-
+const [professors, setProfessors] = useState([]);
+const [selectedProfessor, setSelectedProfessor] = useState("");
   // Fetch dashboard data on component mount
   useEffect(() => {
     fetchDashboardData();
+      fetchProfessors();
   }, []);
 
   const fetchDashboardData = async () => {
@@ -50,10 +52,39 @@ export default function StudentDashboard() {
       setIsLoadingDashboard(false);
     }
   };
+ // Fetch list of professors from backend
+const fetchProfessors = async () => {
+  try {
+   const res = await fetch("/api/admin/professor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    });
+
+    const data = await res.json();
+    
+    if (data.success) {
+      setProfessors(data.professors);
+    }
+  } catch (err) {
+    console.error("Error getting professor list:", err);
+  }
+};
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    
+     if (!selectedProfessor) {
+    alert("Please select a professor first!");
+    return;
+  }
+
+  if (!window.confirm("Are you sure you want to submit this assignment for review?")) {
+    return;
+  }
     if (!title || !file) {
       alert("Please fill in all fields (Title and File)!");
       return;
@@ -66,6 +97,7 @@ export default function StudentDashboard() {
       formData.append("title", title);
       formData.append("email", email);
       formData.append("file", file);
+      formData.append("professor",selectedProfessor);
 
       const uploadRes = await axios.post("/api/student/upload", formData, {
         headers: {
@@ -186,6 +218,47 @@ export default function StudentDashboard() {
                 Supported formats: PDF, DOC, DOCX, ZIP (Max 10MB)
               </p>
             </div>
+              
+              {/* Submit for Review Section */}
+<div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 mb-8">
+
+  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+    <CheckCircle className="w-6 h-6 text-green-600 mr-2" />
+    Submit Assignment for Review
+  </h2>
+
+  {/* Professor Dropdown */}
+  <div className="mb-6">
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Select Professor <span className="text-red-500">*</span>
+    </label>
+
+   <select
+  className="w-full border border-gray-300 rounded-lg px-4 py-3"
+  value={selectedProfessor}
+  onChange={(e) => setSelectedProfessor(e.target.value)}
+>
+  <option value="">-- Choose Professor --</option>
+
+  {professors?.map((prof, index) => (
+    <option key={prof._id || index} value={prof._id}>
+      {prof}
+    </option>
+  ))}
+</select>
+
+
+  {/* Submit Review Button
+  <button
+    onClick={handleSubmitReview}
+    className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-all shadow-lg"
+  >
+    Submit for Review
+  </button> */}
+</div>  
+</div>
+
+
 
             {/* Submit Button */}
             <button

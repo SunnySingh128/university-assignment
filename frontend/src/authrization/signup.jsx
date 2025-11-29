@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Lock, Mail, User, GraduationCap, School, UserCircle, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import Bulk from '../authrization/bulkupload';
 function App() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +94,7 @@ function App() {
         <div className="absolute top-32 right-20 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
         <div className="absolute bottom-32 left-20 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-700"></div>
       </div>
-
+    <Bulk />
       {/* Main Container */}
       <div className={`relative w-full max-w-md transition-all duration-700 transform ${isAnimating ? 'scale-95 opacity-0 -rotate-3' : 'scale-100 opacity-100 rotate-0'}`}>
         {/* Logo and Header */}
