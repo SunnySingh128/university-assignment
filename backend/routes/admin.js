@@ -10,5 +10,4 @@ router.post("/professor",getAllProfessors);
 router.post("/user1",DeleteUser); 
 router.post("/addDepartment",createDepartment);
 router.get("/fetchdepartment",getAllDepartments1);
-router.get
 module.exports=router;

@@ -1,8 +1,10 @@
-const Assignment = require("../model/studentassignment");
+const Assignment = require("../model/studentassignment");// or Student model
+const { notifyAdmins } = require("../controller/socket");
+
 const uploadAssignment = async (req, res) => {
   try {
-    console.log(req.file);
     const filePath = req.file.path;
+console.log("sunny singh")
 
     const data = await Assignment.create({
       email: req.body.email,
@@ -12,15 +14,31 @@ const uploadAssignment = async (req, res) => {
       status: "Submitted"
     });
 
+    // Send Real-time Notification to Admin Dashboard
+console.log("Before notify admins");
+notifyAdmins("assignment_submitted", {
+  message: `${req.body.email} has submitted the assignment "${req.body.title}"`,
+  studentName: req.body.email,
+  email: req.body.email,
+  assignmentId: data._id,
+  status: "Submitted"
+});
+console.log("After notify admins");
+
+
     return res.json({
-      message: "Assignment uploaded successfully",
+      success: true,
+      message: `your assignment has been uploaded successfully`,
       data,
     });
 
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: err.message });
   }
 };
+
+
 const fetchPdf = async (req, res) => {
   try {
     const email = req.query.email;
