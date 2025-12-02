@@ -22,6 +22,7 @@ router.post("/send-emails", upload.single("file"), async (req, res) => {
             .on("end", async () => {
                 for (const email of emails) {
                     const newPass = generatePassword();
+                    
                     await sendEmail(email, newPass);
                 }
 
