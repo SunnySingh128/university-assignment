@@ -22,6 +22,10 @@ const assignmentSchema = new mongoose.Schema({
     type:String,
     required:true,
   },
+  feedback:{
+    type:String,
+    required:false,
+  },
   uploadedAt: {
     type: Date,
     default: Date.now,

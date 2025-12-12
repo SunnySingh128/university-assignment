@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, Lock, User, GraduationCap } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import debounce from '../debouncing';
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

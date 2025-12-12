@@ -107,9 +107,10 @@ console.log(professor);
 async function fetchAllAssignments1(req, res) {
   try {
     const assignmentId = req.params.id;
-    const { status } = req.body;
-
+    const { status,feedback } = req.body;
+    console.log(status);
     // find assignment
+    console.log(assignmentId)
     const assignment = await Assignment.findById(assignmentId);
 
     if (!assignment) {
@@ -118,10 +119,11 @@ async function fetchAllAssignments1(req, res) {
         message: "Assignment not found",
       });
     }
-
     // update status
     assignment.status = status === "accepted" ? "accepted" : "rejected";
-
+      if(status === "rejected"){
+        assignment.feedback = feedback;
+      }
     await assignment.save();
 
     res.json({
