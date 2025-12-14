@@ -13,19 +13,6 @@ console.log("sunny singh")
       fileUrl: filePath,
       status: "Submitted"
     });
-
-    // Send Real-time Notification to Admin Dashboard
-console.log("Before notify admins");
-notifyAdmins("assignment_submitted", {
-  message: `${req.body.email} has submitted the assignment "${req.body.title}"`,
-  studentName: req.body.email,
-  email: req.body.email,
-  assignmentId: data._id,
-  status: "Submitted"
-});
-console.log("After notify admins");
-
-
     return res.json({
       success: true,
       message: `your assignment has been uploaded successfully`,

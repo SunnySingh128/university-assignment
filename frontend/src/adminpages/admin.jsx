@@ -3,7 +3,6 @@ import { Users, School, GraduationCap, UserCircle, LogOut, Menu, X } from 'lucid
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
-import Notifications from './notifications';
 
 function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -23,39 +22,6 @@ function AdminDashboard() {
   }, []);
 
   // Socket.IO setup
-  useEffect(() => {
-    console.log("Connecting to socket...");
-
-    const socket = io("http://localhost:3000", { transports: ["websocket"] });
-
-    socket.on("connect", () => {
-      console.log("Connected to Socket.IO:", socket.id);
-      socket.emit("registerAdmin");
-    });
-     console.log("sunny singh");
-    socket.on("assignment_submitted", (data) => {
-      console.log("REAL TIME RECEIVED:", data);
-
-      setNotifications((prev) => [
-        {
-          id: `${data.assignmentId}-${Date.now()}`,
-          title: "New Assignment Submitted",
-          message: data.message,
-          studentName: data.studentName,
-          email: data.email,
-          status: data.status,
-          timestamp: new Date().toLocaleTimeString(),
-        },
-        ...prev,
-      ]);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected from server");
-    });
-
-    return () => socket.disconnect();
-  }, []);
 
   // Fetch stats from API
   const fetchDashboardStats = async () => {
