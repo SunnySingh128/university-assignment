@@ -32,7 +32,7 @@ function AdminDashboard() {
       console.log("Connected to Socket.IO:", socket.id);
       socket.emit("registerAdmin");
     });
-
+     console.log("sunny singh");
     socket.on("assignment_submitted", (data) => {
       console.log("REAL TIME RECEIVED:", data);
 
@@ -88,7 +88,7 @@ function AdminDashboard() {
   // Logout
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    navigate('/');
   };
 
   // Clear notification

@@ -16,7 +16,9 @@ const transporter = nodemailer.createTransport({
 
 // Function to send email
 const sendEmail = async (receiver, password) => {
+    console.log("sunny singh");
     try {
+        console.log("Sending email to:", receiver);
         const mailOptions = {
             from: `"Admin" <${process.env.EMAIL_USER}>`,
             to: receiver,

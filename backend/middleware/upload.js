@@ -8,13 +8,12 @@ cloudinary.config({
   api_key: '712382633241427', 
   api_secret: 'RMjpwrbP1gspJ2dkjlnf3qCerKY'
 });
-
 // Cloudinary Storage
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,   // ✅ Use actual cloudinary instance
   params: {
     folder: "uploads",
-    allowed_formats: ["jpg", "png", "jpeg", "webp", "pdf", "pptx"],
+    allowed_formats: ["jpg", "png", "jpeg", "webp", "pdf", "pptx","csv"],
   },
 });
 
