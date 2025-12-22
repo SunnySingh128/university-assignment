@@ -4,6 +4,7 @@ const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const dotenv=require('dotenv');
 const Department=require('../model/departmentcreation');
+const User=require('../model/user');
 dotenv.config();
 async function register(req,res){
   const {email,role,password}=req.body;
@@ -100,6 +101,7 @@ const createDepartment = async (req, res) => {
 };
  async function  getAllDepartments1 (req, res) {
   try {
+
     const departments = await Department.find();
 
     if (!departments || departments.length === 0) {
@@ -112,5 +114,127 @@ const createDepartment = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+// controllers/professorController.js
 
-module.exports={register,login,createDepartment,getAllDepartments1};
+const getProfessorsByStudentEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("sunny " + email);
+
+    // 1️⃣ Validate email
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
+      });
+    }
+
+    // 2️⃣ Find student and get department
+    const student = await User.findOne(
+      { email },
+      { department: 1 }
+    );
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found"
+      });
+    }
+
+    const department = student.department;
+
+    // 3️⃣ Find professors with same department
+    // ❌ EXCLUDE SAME EMAIL
+    const professors = await User.find(
+      {
+        department,
+        role: "professor",
+        email: { $ne: email } // ✅ exclude sender email
+      },
+      { password: 0 }
+    );
+
+    if (professors.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No professors found for this department"
+      });
+    }
+
+    // 4️⃣ Success response
+    res.status(200).json({
+      success: true,
+      department,
+      totalProfessors: professors.length,
+      professors
+    });
+
+  } catch (error) {
+    console.error("Error fetching professors:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+
+const getHodByStudentEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("hod"+email);
+    // 1️⃣ Validate email
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
+      });
+    }
+
+    // 2️⃣ Find student and get department
+    const student = await User.findOne(
+      { email},
+      { department: 1 }
+    );
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found"
+      });
+    }
+
+    const department = student.department;
+
+    // 3️⃣ Find HOD with same department
+    const hod = await User.find(
+      { department, role: "hod" },
+      { password: 0 } // exclude sensitive fields
+    );
+
+    if (hod.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "HOD not found for this department"
+      });
+    }
+
+    // 4️⃣ Success response
+    res.status(200).json({
+      success: true,
+      department,
+      hod
+    });
+
+  } catch (error) {
+    console.error("Error fetching HOD:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+
+module.exports={register,login,createDepartment,getAllDepartments1,getProfessorsByStudentEmail,getHodByStudentEmail};

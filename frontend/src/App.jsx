@@ -12,6 +12,7 @@ import Admindepartment from './adminpages/department';
 import Adminusers from './adminpages/user';
 import Depart from "./adminpages/AddDepart";
 import ViewAssign from "./dashboard/studentassignment";
+import Edit from "./adminpages/edit";
 function App() {
   
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/admin/user" element={<Adminusers />} />
         <Route path="/AddDepartment" element={<Depart />} />
         <Route path="/studentassignments" element={<ViewAssign />} />
+        <Route path="/edit-user/:id" element={<Edit />} />
       </Routes>
     </Router>
     </>

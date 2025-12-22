@@ -148,11 +148,6 @@ function AdminDashboard() {
             </div>
 
             <div className="flex items-center gap-4">
-              <Notifications
-                notifications={notifications}
-                onClearNotification={handleClearNotification}
-                onClearAll={handleClearAllNotifications}
-              />
               <button onClick={fetchDashboardStats} className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium">
                 Refresh Stats
               </button>

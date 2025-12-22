@@ -11,9 +11,6 @@ const connect = require("./connection/index.js");
 const http = require("http");
 const server = http.createServer(app);
 
-// Import and initialize Socket.IO (separate file)
-const { initSocket } = require("./controller/socket");
-
 // Middlewares
 app.use(cors());
 app.use(express.json());
@@ -26,7 +23,7 @@ app.use("/store", require("./routes/user"));      // User routes
 app.use("/student", require("./routes/student")); // Student routes
 app.use("/auth", require("./routes/password"));   // Password reset
 app.use("/bulkupload", require("./routes/bulkupload.js"));
-
+app.use("/assignments", require("./routes/hod"));
 // Static file serving
 app.use("/:filename", express.static(path.join(__dirname, "./uploads")));
 
@@ -40,4 +37,3 @@ const port = process.env.PORT || 3000;
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-initSocket(server);

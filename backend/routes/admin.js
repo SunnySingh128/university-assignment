@@ -1,13 +1,16 @@
 const express=require('express');
 const router=express.Router();
-const {register,login,createDepartment,getAllDepartments1}=require('../db/admin');
-const {getAllDepartments,getUser,DeleteUser,getAllProfessors}=require('../db/admindepartment');
+const {register,login,createDepartment,getAllDepartments1,getProfessorsByStudentEmail,getHodByStudentEmail}=require('../db/admin');
+const {getAllDepartments,getUser,DeleteUser,getAllProfessors,updateUserByEmail}=require('../db/admindepartment');
 router.post('/register',register);
 router.post('/login',login);
 router.get("/department",getAllDepartments);
 router.get("/user",getUser);
+router.post("/updateUser",updateUserByEmail);
 router.post("/professor",getAllProfessors);
 router.post("/user1",DeleteUser); 
 router.post("/addDepartment",createDepartment);
 router.get("/fetchdepartment",getAllDepartments1);
+router.post("/professor1",getProfessorsByStudentEmail);
+router.post("/hod",getHodByStudentEmail);
 module.exports=router;

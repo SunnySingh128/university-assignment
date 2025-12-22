@@ -109,6 +109,7 @@ function Users() {
   };
 
   const handleEdit = (id) => {
+    console.log(id);
     navigate(`/edit-user/${id}`);
   };
 
@@ -245,6 +246,7 @@ function Users() {
               {/* Table Body */}
               <div className="divide-y divide-gray-100">
                 {currentItems.map((user, index) => (
+                 
                   <div
                     key={user._id || user.id}
                     className="px-6 py-4 hover:bg-blue-50 transition-all duration-200 animate-fade-in"

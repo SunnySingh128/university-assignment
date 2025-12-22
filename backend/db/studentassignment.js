@@ -1,10 +1,9 @@
 const Assignment = require("../model/studentassignment");// or Student model
-const { notifyAdmins } = require("../controller/socket");
+const User=require('../model/user');
 
 const uploadAssignment = async (req, res) => {
   try {
     const filePath = req.file.path;
-console.log("sunny singh")
 
     const data = await Assignment.create({
       email: req.body.email,
@@ -29,7 +28,12 @@ console.log("sunny singh")
 const fetchPdf = async (req, res) => {
   try {
     const email = req.query.email;
+         if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
 
+    const department= await User.findOne({ email }).select("department");
+    console.log(department);
     // Find all assignments for this email
     const assignments = await Assignment.find({ email });
 console.log(assignments);
@@ -53,10 +57,10 @@ console.log(assignments);
 async function fetchAllAssignments(req, res) {
   try {
     const { professor } = req.body;  // professor name comes from frontend, e.g., "suhani"
-console.log(professor);
     // 1. Check if professor exists in ANY assignment
     const professor1 = await Assignment.findOne({ professor: professor });
-
+    console.log(professor +"print hoja");
+  const department= await User.findOne({email:professor}).select("department");
     if (!professor1) {
       return res.status(404).json({
         success: false,
@@ -80,6 +84,7 @@ console.log(professor);
       success: true,
       total: assignments.length,
       assignments,
+      department:department.department,
     });
 
   } catch (error) {

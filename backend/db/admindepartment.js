@@ -1,4 +1,5 @@
 const model=require('../model/user');
+const User=require("../model/user")
 async function getAllDepartments(req, res) {
   try {
     // Group users by department and count them
@@ -27,12 +28,12 @@ async function getAllDepartments(req, res) {
 async function getUser(req, res) {
   try {
     // Fetch all users and select only the required fields
-    const users = await model.find({}, { fullName: 1, email: 1, role: 1, department: 1, _id: 0 });
+    const users = await model.find({}, { fullName: 1, email: 1, role: 1, department: 1, _id: 1 });
 
     if (!users || users.length === 0) {
       return res.status(404).json({ message: "No users found" });
     }
-
+   console.log(users)
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -65,10 +66,10 @@ async function getAllProfessors(req, res) {
 
     const studentDept = student.department;
 
-    // 2️⃣ Find professors from same department
+    // 2️⃣ Find professors from same department (include email)
     const professors = await model.find(
       { role: "professor", department: studentDept },
-      { fullName: 1, _id: 0 }
+      { email: 1, _id: 0 }   // ✅ FIX HERE
     );
 
     if (professors.length === 0) {
@@ -78,24 +79,67 @@ async function getAllProfessors(req, res) {
       });
     }
 
-    // 3️⃣ Return only professor names in array
-    const professorNames = professors.map(p => p.fullName);
-
+    // 3️⃣ Extract professor emails
+    const professorEmails = professors.map(p => p.email);
+console.log(professorEmails)
     res.status(200).json({
       success: true,
       department: studentDept,
-      professors: professorNames
+      professors: professorEmails
     });
 
   } catch (error) {
     console.error("Error fetching professors:", error);
     res.status(500).json({
       success: false,
-      message: "Server error",
-      error
+      message: "Server error"
     });
   }
 }
+const updateUserByEmail = async (req, res) => {
+  try {
+    const { _id, fullName, email, role, department } = req.body;
+   console.log(req.body);
+    if (!_id) {
+      return res.status(400).json({
+        message: "User ID is required"
+      });
+    }
+console.log(".....checking");
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        fullName,
+        email,
+        role,
+        department
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+    console.log(updatedUser);
+    if (!updatedUser) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error("UPDATE USER ERROR 👉", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message
+    });
+  }
+};
+
 
 
 
@@ -130,4 +174,4 @@ async function DeleteUser(req,res){
   res.status(500).json({message:"Server error",error});
 }
 }
-module.exports={getAllDepartments,getUser,DeleteUser,getAllProfessors};
+module.exports={getAllDepartments,getUser,DeleteUser,getAllProfessors,updateUserByEmail};

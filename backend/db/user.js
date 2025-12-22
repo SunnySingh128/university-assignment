@@ -114,4 +114,5 @@ const departmentCounts = await model.aggregate([
 }
 
 
+
 module.exports = { register,fetchAllCounts };

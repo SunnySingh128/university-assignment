@@ -1,14 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import { Mail, Lock, Key, ArrowLeft, GraduationCap } from 'lucide-react';
-
 function ResetPassword() {
   const [email, setEmail] = useState("");
   const [step, setStep] = useState(1); // 1: request, 2: verify
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const sendOtp = async () => {
     if (!email) return alert("Enter email");
     try {

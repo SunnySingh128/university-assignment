@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Edit, Trash2, ChevronLeft, ChevronRight, GraduationCap, ArrowLeft } from 'lucide-react';
+import { Search, Filter, Trash2, ChevronLeft, ChevronRight, GraduationCap, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -96,10 +96,6 @@ function Departments() {
         alert('Failed to delete department');
       }
     }
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/edit-department/${id}`);
   };
 
   // Get unique types for filter dropdown
@@ -232,13 +228,7 @@ function Departments() {
                         <p className="text-gray-700 font-semibold">{dept.userCount}</p>
                       </div>
                       <div className="col-span-3 flex items-center justify-center gap-2">
-                        <button
-                          onClick={() => handleEdit(dept._id)}
-                          className="flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                        >
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </button>
+                        
                         <button
                           onClick={() => handleDelete(dept._id, dept.name)}
                           className="flex items-center px-4 py-2 bg-white text-red-600 border-2 border-red-600 rounded-lg hover:bg-red-50 transition-all transform hover:-translate-y-0.5"

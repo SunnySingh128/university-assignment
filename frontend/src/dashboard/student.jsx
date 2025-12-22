@@ -68,7 +68,7 @@ const fetchProfessors = async () => {
     const data = await res.json();
     
     if (data.success) {
-      setProfessors(data.professors);
+      setProfessors(data.professors.map(p => ({email:p})));
     }
   } catch (err) {
     console.error("Error getting professor list:", err);
@@ -239,10 +239,10 @@ const fetchProfessors = async () => {
   onChange={(e) => setSelectedProfessor(e.target.value)}
 >
   <option value="">-- Choose Professor --</option>
-
+   console.log(professors)
   {professors?.map((prof, index) => (
-    <option key={prof._id || index} value={prof._id}>
-      {prof}
+    <option key={prof.email || index} value={prof.email}>
+      {prof.email}  (professor)
     </option>
   ))}
 </select>
