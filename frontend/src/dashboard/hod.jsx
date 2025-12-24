@@ -87,7 +87,7 @@ export default function HODDashboard() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `http://localhost:3000/api/student/hod/${assignmentId}/accept`,
+        `/api/student/hod/${assignmentId}/accept`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -112,7 +112,7 @@ export default function HODDashboard() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `http://localhost:3000/api/student/hod/${assignmentId}/reject`,
+        `/api/student/hod/${assignmentId}/reject`,
         { reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );
