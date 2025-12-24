@@ -26,7 +26,7 @@ function Users() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('/api/admin/user', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/admin/user`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -95,7 +95,7 @@ function Users() {
     if (window.confirm(`Are you sure you want to delete ${name}?`)) {
       try {
         const token = localStorage.getItem('token');
-        await axios.post(`/api/admin/user1`, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/admin/user1`, {
           headers: { Authorization: `Bearer ${token}` },
           email:email,
         });

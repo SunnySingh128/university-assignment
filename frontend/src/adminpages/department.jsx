@@ -25,7 +25,7 @@ function Departments() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('/api/admin/department', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/admin/department`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -86,7 +86,7 @@ function Departments() {
     if (window.confirm(`Are you sure you want to delete ${name}?`)) {
       try {
         const token = localStorage.getItem('token');
-        await axios.post(`/admin/department`, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/admin/department`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('Department deleted successfully!');

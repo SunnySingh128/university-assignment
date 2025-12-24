@@ -22,7 +22,7 @@ function AddDepartment() {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        '/api/admin/addDepartment',
+        `${import.meta.env.VITE_API_URL}/admin/addDepartment`,
         { name: departmentName },
         { headers: { Authorization: `Bearer ${token}` } }
       );

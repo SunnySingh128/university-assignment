@@ -60,7 +60,7 @@ const handleSubmit = async (e) => {
   setSaving(true);
   try {
     const response = await axios.post(
-      '/api/admin/updateUser',
+      `${import.meta.env.VITE_API_URL}/admin/updateUser`,
       userData,
       {
         headers: {

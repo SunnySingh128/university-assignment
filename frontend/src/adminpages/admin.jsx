@@ -28,7 +28,7 @@ function AdminDashboard() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('/api/store/fetchallcounts', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/fetchallcounts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

@@ -53,7 +53,7 @@ const [currentAssignment, setCurrentAssignment] = useState(null);
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        '/api/student/professor',
+        `${import.meta.env.VITE_API_URL}/student/professor`,
         { professor: email1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -107,7 +107,7 @@ const [currentAssignment, setCurrentAssignment] = useState(null);
       const token = localStorage.getItem("token");
 
       await axios.post(
-        `/api/student/professor1/${assignmentId}`,
+        `${import.meta.env.VITE_API_URL}/student/professor1/${assignmentId}`,
         { status: action },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -133,12 +133,12 @@ const handleForwardClick = async (assignment) => {
 
     const [professorsResponse, hodsResponse] = await Promise.all([
       axios.post(
-        "/api/admin/professor1",
+        `${import.meta.env.VITE_API_URL}/admin/professor1`,
         { email: email1 },
         { headers: { Authorization: `Bearer ${token}` } }
       ),
       axios.post(
-        "/api/admin/hod",
+        `${import.meta.env.VITE_API_URL}/admin/hod`,
         { email: email1 },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -178,7 +178,7 @@ const handleForwardClick = async (assignment) => {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        `/api/student/professor1/${currentRejectId}`,
+        `${import.meta.env.VITE_API_URL}/student/professor1/${currentRejectId}`,
         { status: "rejected", feedback: feedbackText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -213,7 +213,7 @@ const handleForwardSubmit = async () => {
     const token = localStorage.getItem("token");
        console.log("sunny",email1,currentAssignment);
     await axios.post(
-      `/api/assignments/hod`,
+      `${import.meta.env.VITE_API_URL}/assignments/hod`,
       {
         email: currentAssignment.email,
         title: currentAssignment.title,

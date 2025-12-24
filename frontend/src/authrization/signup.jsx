@@ -23,7 +23,7 @@ function App() {
 
   const fetchDepartments = async () => {
     try {
-      const response = await fetch('/api/admin/fetchdepartment');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/fetchdepartment`);
       const data = await response.json();
       
       console.log('Departments fetched:', data);
@@ -56,7 +56,7 @@ function App() {
         department: formData.department,
       };
 
-      const response = await fetch('/api/store/register', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/store/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registrationData),

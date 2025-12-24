@@ -38,7 +38,7 @@ export default function StudentAssignments() {
   const fetchAssignments = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('/api/student/student-assignment', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/student/student-assignment`, {
         params: { email: email }
       });
 

@@ -37,7 +37,7 @@ export default function HODDashboard() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('api/assignments/hod1', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/assignments/hod1`, {
         headers: { Authorization: `Bearer ${token}` },
         email:email1,
       });
@@ -87,7 +87,7 @@ export default function HODDashboard() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `/api/student/hod/${assignmentId}/accept`,
+        `${import.meta.env.VITE_API_URL}/student/hod/${assignmentId}/accept`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -112,7 +112,7 @@ export default function HODDashboard() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `/api/student/hod/${assignmentId}/reject`,
+        `${import.meta.env.VITE_API_URL}/student/hod/${assignmentId}/reject`,
         { reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );

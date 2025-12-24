@@ -31,7 +31,7 @@ const [selectedProfessor, setSelectedProfessor] = useState("");
   const fetchDashboardData = async () => {
     setIsLoadingDashboard(true);
     try {
-      const res = await axios.post('/api/auth/login', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
         email: email,
         password: password,
       });
@@ -99,7 +99,7 @@ const fetchProfessors = async () => {
       formData.append("file", file);
       formData.append("professor",selectedProfessor);
 
-      const uploadRes = await axios.post("/api/student/upload", formData, {
+      const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/student/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

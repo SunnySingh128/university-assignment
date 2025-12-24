@@ -10,7 +10,7 @@ function ResetPassword() {
   const sendOtp = async () => {
     if (!email) return alert("Enter email");
     try {
-      await axios.post("/api/auth/forgot-password", { email });
+      await axios.post(`${import.meta.env.VITE_API_URL}/auth/forgot-password`, { email });
       alert("OTP sent to email");
       setStep(2);
     } catch (err) {
@@ -20,7 +20,7 @@ function ResetPassword() {
 
   const verifyAndReset = async () => {
     try {
-      const res = await axios.post("/api/auth/verify-otp", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/verify-otp`, {
         email, otp, password, confirmPassword
       });
       alert(res.data.message);
