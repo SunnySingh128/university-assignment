@@ -43,7 +43,3 @@ This system replaces paper-based assignment handling with a fast, transparent, a
 * Provide transparent tracking
 * Improve workflow efficiency
 * Maintain clean digital records
-
----
-
-Let me know if you want to add **installation steps, API documentation, environment variable setup, or screenshots**.
