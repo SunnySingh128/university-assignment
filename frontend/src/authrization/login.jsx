@@ -13,29 +13,22 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
       alert("Please fill all the fields");
       return;
     }
-
     setLoading(true);
-
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
         email,
         password,
       });
-
       localStorage.setItem("token", res.data.token);
       const userRole = res.data.role;
-
       if (userRole === "admin") {
         navigate("/admin");
       } else if (userRole === "student") {
-        navigate("/student", {
-          state: { email, password }
-        });
+        navigate("/student", { state: { email, password } });
       } else if (userRole === "professor") {
         navigate("/professor", { state: { email } });
       } else if (userRole === "hod") {
@@ -59,49 +52,59 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 -z-10">
-        <img
-          src="https://thumbs.dreamstime.com/b/abstract-illustration-representing-education-business-growth-open-books-glowing-light-bulbs-graduation-caps-412556971.jpg"
-          alt="Education knowledge growth background"
-          className="w-full h-full object-cover"
-        />
-        {/* Teal-cyan tinted overlay to enhance harmony */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-600/20 via-cyan-500/10 to-blue-600/20" />
-        <div className="absolute inset-0 backdrop-blur-sm" />
-      </div>
-
-      {/* Subtle animated orbs in teal/cyan tones */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-5 opacity-50">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-teal-400/30 rounded-full filter blur-3xl animate-blob"></div>
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-400/30 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
-      </div>
-
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
+      {/* High-Quality Background Image with Crystal Clear Visibility */}
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=2400&q=95&auto=format&fit=crop')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          filter: 'brightness(0.85) contrast(1.15) saturate(1.1)'
+        }}
+      />
+      
+      {/* Elegant gradient overlay matching the warm tones of the image */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-900/60 via-orange-800/50 to-rose-900/60 z-10" />
+      
+      {/* Subtle animated orbs in warm tones */}
+      <div className="absolute top-20 left-20 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl animate-pulse z-10" />
+      <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse z-10" style={{ animationDelay: '1s' }} />
+      
       {/* Main Login Card */}
-      <div className={`relative w-full max-w-md transition-all duration-500 ease-out ${isAnimating ? 'scale-95 opacity-0 translate-y-10' : 'scale-100 opacity-100 translate-y-0'}`}>
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/70 p-8 md:p-10">
+      <div className={`relative z-20 w-full max-w-md transition-all duration-500 ${isAnimating ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}>
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/30">
           {/* Header */}
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-3xl shadow-xl mb-6">
-              <GraduationCap className="w-10 h-10 text-white" strokeWidth={2} />
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl mb-4 shadow-lg transform hover:scale-110 transition-transform duration-300">
+              <GraduationCap className="w-9 h-9 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome Back</h1>
-            <p className="text-gray-600 text-lg">Sign in to your EduFlow account</p>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Sign in to your EduFlow account
+            </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-5">
             {/* Email */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <div className="relative group">
+              <label className="block text-sm font-semibold text-gray-700 mb-2 ml-1">
+                Email Address
+              </label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-600" />
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-600 group-focus-within:text-orange-600 transition-colors">
+                  <User className="w-5 h-5" />
+                </div>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-teal-50/70 border border-teal-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-cyan-500/40 focus:border-cyan-500 transition-all duration-300 placeholder-gray-500"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
+                  className="w-full pl-12 pr-4 py-3.5 bg-amber-50/70 border-2 border-amber-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 placeholder-gray-400 text-gray-800"
                   placeholder="you@example.com"
                   required
                 />
@@ -109,90 +112,93 @@ function Login() {
             </div>
 
             {/* Password */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+            <div className="relative group">
+              <label className="block text-sm font-semibold text-gray-700 mb-2 ml-1">
+                Password
+              </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-600" />
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-600 group-focus-within:text-orange-600 transition-colors">
+                  <Lock className="w-5 h-5" />
+                </div>
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-12 pr-14 py-4 bg-teal-50/70 border border-teal-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-cyan-500/40 focus:border-cyan-500 transition-all duration-300 placeholder-gray-500"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
+                  className="w-full pl-12 pr-14 py-3.5 bg-amber-50/70 border-2 border-amber-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 placeholder-gray-400 text-gray-800"
                   placeholder="••••••••"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-teal-600 hover:text-cyan-700 transition-colors"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-amber-600 hover:text-orange-700 transition-colors focus:outline-none"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
             </div>
 
             {/* Remember & Forgot */}
-            <div className="flex items-center justify-between">
-              <label className="flex items-center cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 text-teal-600 rounded focus:ring-cyan-500" />
-                <span className="ml-2 text-sm text-gray-700">Remember me</span>
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-orange-600 bg-amber-50 border-amber-300 rounded focus:ring-orange-500 focus:ring-2 cursor-pointer"
+                />
+                <span className="ml-2 text-gray-700 group-hover:text-orange-600 transition-colors">
+                  Remember me
+                </span>
               </label>
               <button
                 type="button"
                 onClick={forgotpassword}
-                className="text-sm font-medium text-teal-600 hover:text-cyan-700 transition-colors"
+                className="text-orange-600 hover:text-orange-700 font-semibold transition-colors hover:underline"
               >
                 Forgot Password?
               </button>
             </div>
 
-            {/* Submit Button - Teal to Cyan Gradient */}
+            {/* Submit Button */}
             <button
-              type="submit"
+              onClick={handleSubmit}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-2xl hover:from-teal-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2"
             >
               {loading ? (
-                <span className="flex items-center justify-center">
-                  <Loader2 className="animate-spin mr-2 h-5 w-5" />
-                  Signing in...
-                </span>
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Signing in...</span>
+                </>
               ) : (
-                "Sign In"
+                <span>Sign In</span>
               )}
             </button>
-          </form>
+          </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-600">
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-600 leading-relaxed">
               By signing in, you agree to our{' '}
-              <button className="font-medium text-teal-600 hover:underline">Terms of Service</button>
+              <a href="#" className="text-orange-600 hover:text-orange-700 font-medium hover:underline">
+                Terms of Service
+              </a>
               {' '}and{' '}
-              <button className="font-medium text-teal-600 hover:underline">Privacy Policy</button>
+              <a href="#" className="text-orange-600 hover:text-orange-700 font-medium hover:underline">
+                Privacy Policy
+              </a>
             </p>
           </div>
         </div>
 
-        <p className="text-center mt-6 text-gray-600 text-sm">
-          Powered by <span className="font-semibold text-cyan-600">EduFlow</span>
-        </p>
+        {/* Branding */}
+        <div className="text-center mt-6">
+          <p className="text-white text-sm font-medium drop-shadow-lg flex items-center justify-center space-x-2">
+            <GraduationCap className="w-4 h-4" />
+            <span>Powered by EduFlow</span>
+          </p>
+        </div>
       </div>
-
-      <style jsx>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-          animation: blob 20s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-      `}</style>
     </div>
   );
 }
