@@ -1,6 +1,6 @@
 const User = require("../model/user");
 const bcrypt = require("bcryptjs");
-const { sendEmail } = require("../utils/checkemail");
+const  sendEmail  = require("../utils/checkemail");
 
 const otpStore = {}; // simple dev store
 
