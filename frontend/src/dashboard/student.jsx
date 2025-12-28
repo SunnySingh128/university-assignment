@@ -109,16 +109,6 @@ export default function StudentDashboard() {
         email: email,
         password: password,
       });
-
-      if (res.data && res.data.user) {
-        setDashboardStats({
-          draft: res.data.stats?.draft || 0,
-          submitted: res.data.stats?.submitted || 0,
-          approved: res.data.stats?.approved || 0,
-          rejected: res.data.stats?.rejected || 0
-        });
-        setRecentAssignments(res.data.recentAssignments || []);
-      }
     } catch (err) {
       console.error('Error fetching dashboard:', err);
     } finally {
@@ -265,38 +255,6 @@ export default function StudentDashboard() {
                 <span className="text-gray-800 font-bold">{email}</span>
               </div>
             </div>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <StatCard 
-              icon={FileText} 
-              title="Draft" 
-              value={dashboardStats.draft}
-              gradient="bg-gradient-to-br from-gray-400 to-gray-600"
-              iconBg="bg-gradient-to-br from-gray-500 to-gray-700"
-            />
-            <StatCard 
-              icon={Clock} 
-              title="Submitted" 
-              value={dashboardStats.submitted}
-              gradient="bg-gradient-to-br from-yellow-400 to-amber-600"
-              iconBg="bg-gradient-to-br from-yellow-500 to-amber-700"
-            />
-            <StatCard 
-              icon={CheckCircle} 
-              title="Approved" 
-              value={dashboardStats.approved}
-              gradient="bg-gradient-to-br from-green-400 to-emerald-600"
-              iconBg="bg-gradient-to-br from-green-500 to-emerald-700"
-            />
-            <StatCard 
-              icon={XCircle} 
-              title="Rejected" 
-              value={dashboardStats.rejected}
-              gradient="bg-gradient-to-br from-red-400 to-rose-600"
-              iconBg="bg-gradient-to-br from-red-500 to-rose-700"
-            />
           </div>
 
           {/* Upload Form */}
