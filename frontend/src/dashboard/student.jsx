@@ -128,7 +128,7 @@ export default function StudentDashboard() {
 
   const fetchProfessors = async () => {
     try {
-      const res = await fetch("/api/admin/professor", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/professor`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })
