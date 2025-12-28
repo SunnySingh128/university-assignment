@@ -1,6 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Mail, Lock, Key, ArrowLeft, GraduationCap, Send, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, Key, ArrowLeft, GraduationCap, Send, ShieldCheck, CheckCircle, XCircle, X, AlertCircle } from 'lucide-react';
+
+// Toast Notification Component
+const Toast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const styles = {
+    success: 'bg-green-50 border-green-300 text-green-800',
+    error: 'bg-red-50 border-red-300 text-red-800',
+    warning: 'bg-amber-50 border-amber-300 text-amber-800'
+  };
+
+  const icons = {
+    success: <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />,
+    error: <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />,
+    warning: <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0" />
+  };
+
+  return (
+    <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border-2 transform transition-all duration-300 animate-slide-in ${styles[type]}`}>
+      {icons[type]}
+      <p className="font-semibold text-sm">{message}</p>
+      <button 
+        onClick={onClose}
+        className="ml-2 hover:opacity-70 transition-opacity"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </div>
+  );
+};
 
 function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -8,15 +43,24 @@ function ResetPassword() {
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [toast, setToast] = useState(null);
+
+  // Show toast notification
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+  };
 
   const sendOtp = async () => {
-    if (!email) return alert("Enter email");
+    if (!email) {
+      showToast("Please enter your email address", "warning");
+      return;
+    }
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/auth/forgot-password`, { email });
-      alert("OTP sent to email");
+      showToast("OTP sent to your email successfully!", "success");
       setStep(2);
     } catch (err) {
-      alert(err.response?.data?.message || "Error");
+      showToast(err.response?.data?.message || "Failed to send OTP. Please try again.", "error");
     }
   };
 
@@ -25,16 +69,30 @@ function ResetPassword() {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/verify-otp`, {
         email, otp, password, confirmPassword
       });
-      alert(res.data.message);
-      setStep(1);
-      setEmail(""); setOtp(""); setPassword(""); setConfirmPassword("");
+      showToast(res.data.message || "Password reset successful!", "success");
+      setTimeout(() => {
+        setStep(1);
+        setEmail(""); 
+        setOtp(""); 
+        setPassword(""); 
+        setConfirmPassword("");
+      }, 2000);
     } catch (err) {
-      alert(err.response?.data?.message || "Error");
+      showToast(err.response?.data?.message || "Failed to reset password. Please try again.", "error");
     }
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+
       {/* High-Quality Background Image */}
       <div 
         className="absolute inset-0 z-0"
@@ -206,6 +264,22 @@ function ResetPassword() {
           </p>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes slide-in {
+          from {
+            transform: translateX(400px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        .animate-slide-in {
+          animation: slide-in 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }

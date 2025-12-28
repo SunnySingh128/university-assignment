@@ -340,22 +340,6 @@ function App() {
             </button>
           </div>
 
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t-2 border-amber-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white text-gray-600 font-medium">Already have an account?</span>
-            </div>
-          </div>
-
-          {/* Footer Link */}
-          <div className="text-center">
-            <a href="/" className="text-orange-600 hover:text-orange-700 font-bold text-sm hover:underline transition-colors">
-              Sign In Here
-            </a>
-          </div>
         </div>
 
         {/* Branding */}
