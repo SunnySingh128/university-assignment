@@ -1,7 +1,42 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Lock, User, GraduationCap, Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, EyeOff, Lock, User, GraduationCap, Loader2, CheckCircle, XCircle, X, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+// Toast Notification Component
+const Toast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const styles = {
+    success: 'bg-green-50 border-green-300 text-green-800',
+    error: 'bg-red-50 border-red-300 text-red-800',
+    warning: 'bg-amber-50 border-amber-300 text-amber-800'
+  };
+
+  const icons = {
+    success: <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />,
+    error: <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />,
+    warning: <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0" />
+  };
+
+  return (
+    <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border-2 transform transition-all duration-300 animate-slide-in ${styles[type]}`}>
+      {icons[type]}
+      <p className="font-semibold text-sm">{message}</p>
+      <button 
+        onClick={onClose}
+        className="ml-2 hover:opacity-70 transition-opacity"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </div>
+  );
+};
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,12 +44,18 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
   const navigate = useNavigate();
+
+  // Show toast notification
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      alert("Please fill all the fields");
+      showToast("Please fill all the fields", "warning");
       return;
     }
     setLoading(true);
@@ -25,20 +66,25 @@ function Login() {
       });
       localStorage.setItem("token", res.data.token);
       const userRole = res.data.role;
-      if (userRole === "admin") {
-        navigate("/admin");
-      } else if (userRole === "student") {
-        navigate("/student", { state: { email, password } });
-      } else if (userRole === "professor") {
-        navigate("/professor", { state: { email } });
-      } else if (userRole === "hod") {
-        navigate("/hod", { state: { email } });
-      } else {
-        alert("Unknown role. Please contact support.");
-      }
+      
+      showToast("Login successful! Redirecting...", "success");
+      
+      setTimeout(() => {
+        if (userRole === "admin") {
+          navigate("/admin");
+        } else if (userRole === "student") {
+          navigate("/student", { state: { email, password } });
+        } else if (userRole === "professor") {
+          navigate("/professor", { state: { email } });
+        } else if (userRole === "hod") {
+          navigate("/hod", { state: { email } });
+        } else {
+          showToast("Unknown role. Please contact support.", "error");
+        }
+      }, 1000);
     } catch (err) {
       console.error(err);
-      alert("Invalid credentials");
+      showToast("Invalid credentials. Please try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -53,6 +99,15 @@ function Login() {
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+
       {/* High-Quality Background Image with Crystal Clear Visibility */}
       <div 
         className="absolute inset-0 z-0"
@@ -199,6 +254,22 @@ function Login() {
           </p>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes slide-in {
+          from {
+            transform: translateX(400px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        .animate-slide-in {
+          animation: slide-in 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
