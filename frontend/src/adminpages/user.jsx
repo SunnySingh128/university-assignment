@@ -26,7 +26,7 @@ function Users() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}admin/user`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/admin/user`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
