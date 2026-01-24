@@ -96,8 +96,9 @@ function Users() {
       try {
         const token = localStorage.getItem('token');
         await axios.post(`${import.meta.env.VITE_API_URL}/admin/user1`, {
-          headers: { Authorization: `Bearer ${token}` },
-          email: email,
+          email: email
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
         });
         alert('User deleted successfully!');
         fetchUsers();

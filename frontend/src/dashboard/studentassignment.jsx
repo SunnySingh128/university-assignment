@@ -38,8 +38,10 @@ export default function StudentAssignments() {
   const fetchAssignments = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/student/student-assignment`, {
-        params: { email: email }
+        params: { email: email },
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       if (res.data && res.data.assignments) {

@@ -118,14 +118,14 @@ export default function StudentDashboard() {
 
   const fetchProfessors = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/professor`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email })
+      const token = localStorage.getItem('token');
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/admin/professor`, {
+        email: email
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
-      const data = await res.json();
-      if (data.success) {
-        setProfessors(data.professors.map(p => ({email:p})));
+      if (res.data.success) {
+        setProfessors(res.data.professors.map(p => ({email:p})));
       }
     } catch (err) {
       console.error("Error getting professor list:", err);

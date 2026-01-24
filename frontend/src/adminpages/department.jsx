@@ -87,6 +87,8 @@ function Departments() {
       try {
         const token = localStorage.getItem('token');
         await axios.post(`${import.meta.env.VITE_API_URL}/admin/department`, {
+          id: id
+        }, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('Department deleted successfully!');
