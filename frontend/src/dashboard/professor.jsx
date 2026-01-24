@@ -204,17 +204,22 @@ export default function ProfessorDashboard() {
       return;
     }
 
+    // Check if the selected email is a professor or HOD
+    const isProfessor = professorsList.some(prof => prof.email === forwardEmail);
+    const endpoint = isProfessor ? 'professor' : 'hod';
+    const payloadKey = isProfessor ? 'professor' : 'hod';
+
     try {
       const token = localStorage.getItem("token");
-      console.log("sunny",email1,currentAssignment);
-      
+      console.log("sunny", email1, currentAssignment);
+
       await axios.post(
         `${import.meta.env.VITE_API_URL}/assignments/hod`,
         {
           email: currentAssignment.email,
           title: currentAssignment.title,
           professor: email1,
-          hod: forwardEmail,
+          forwadedto: forwardEmail,
           fileUrl: currentAssignment.fileUrl,
           department: department1,
           status: "Forwarded"

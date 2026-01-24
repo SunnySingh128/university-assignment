@@ -26,7 +26,7 @@ const assignmentSchema = new mongoose.Schema({
     type:String,
     required:true,
   },
-  hod:{
+  forwardto:{
     type:String,
     required:true,
   },

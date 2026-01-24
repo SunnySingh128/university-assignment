@@ -1,5 +1,6 @@
 const Assignment = require("../model/studentassignment");// or Student model
 const User=require('../model/user');
+const Assignment1=require("../model/hod.js");
 
 const uploadAssignment = async (req, res) => {
   try {
@@ -56,11 +57,12 @@ console.log(assignments);
 
 async function fetchAllAssignments(req, res) {
   try {
+    console.log("sunny")
     const { professor } = req.body;  // professor name comes from frontend, e.g., "suhani"
     // 1. Check if professor exists in ANY assignment
     const professor1 = await Assignment.findOne({ professor: professor });
     console.log(professor +"print hoja");
-  const department= await User.findOne({email:professor}).select("department");
+    const department= await User.findOne({email:professor}).select("department");
     if (!professor1) {
       return res.status(404).json({
         success: false,
@@ -68,22 +70,28 @@ async function fetchAllAssignments(req, res) {
       });
     }
 
-    // 2. Fetch all assignments of this professor
+    // 2. Fetch all assignments of this professor from studentassignment
     const assignments = await Assignment.find({ professor: professor })
       .select("email title fileUrl uploadedAt status");
 
-    if (!assignments || assignments.length === 0) {
+    // 3. Fetch all assignments from hod (Assignment1)
+    const forwadedAssignments = await Assignment1.find({ forwardto: professor })
+
+    // 4. Combine both arrays
+           console.log(forwadedAssignments);
+    const allAssignments = [...assignments, ...forwadedAssignments];
+    if (!allAssignments || allAssignments.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No assignments found",
       });
     }
 
-    // 3. Return results
+    // 5. Return results
     return res.json({
       success: true,
-      total: assignments.length,
-      assignments,
+      total: allAssignments.length,
+      assignments: allAssignments,
       department:department.department,
     });
 

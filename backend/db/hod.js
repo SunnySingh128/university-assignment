@@ -2,13 +2,21 @@ const Assignment1 = require("../model/hod");
 const User = require("../model/user");
 const uploadAssignment = async (req, res) => {
   try {
-    console.log(req.body);
     const filePath = req.body.fileUrl;
+    const user = await User.findOne({ email: req.body.forwadedto });
+
+if (!user) {
+  return res.status(404).json({ message: "User not found" });
+}
+
+const { role } = user;
+const forwardto=role;
+console.log(forwardto);
     const data = await Assignment1.create({
       email: req.body.email,
       title: req.body.title,
       professor: req.body.professor,
-      hod:req.body.hod,
+      forwardto:req.body.forwadedto,
       fileUrl: filePath,
       department:req.body.department,
       status: req.body.status,
