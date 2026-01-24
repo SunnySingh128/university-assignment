@@ -60,17 +60,25 @@ function Login() {
     }
     setLoading(true);
     try {
+      console.log(import.meta.env.VITE_API_URL)
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
         email,
         password,
       });
+      // Store token and role
       localStorage.setItem("token", res.data.token);
       const userRole = res.data.role;
-      
-      showToast("Login successful! Redirecting...", "success");
-      
+
+      console.log("Login successful! Role:", userRole);
+      console.log("Token stored:", res.data.token);
+
+      showToast("Login successful!", "success");
+
+      // Small delay to ensure token is set before navigation
       setTimeout(() => {
+        console.log("Navigating for role:", userRole);
         if (userRole === "admin") {
+          console.log("Navigating to /admin");
           navigate("/admin");
         } else if (userRole === "student") {
           navigate("/student", { state: { email, password } });
@@ -79,9 +87,10 @@ function Login() {
         } else if (userRole === "hod") {
           navigate("/hod", { state: { email } });
         } else {
+          console.log("Unknown role:", userRole);
           showToast("Unknown role. Please contact support.", "error");
         }
-      }, 1000);
+      }, 100);
     } catch (err) {
       console.error(err);
       showToast("Invalid credentials. Please try again.", "error");

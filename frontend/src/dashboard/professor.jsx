@@ -344,19 +344,35 @@ export default function ProfessorDashboard() {
                 </div>
               </div>
 
-              {/* Quick Stats */}
-              <div className="flex flex-wrap gap-4">
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border border-orange-200 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-yellow-400">
-                  <div className="text-2xl font-bold text-amber-600">{stats.submitted}</div>
-                  <div className="text-sm font-semibold text-slate-800">Pending</div>
+              {/* Right side: Quick Stats + Professor Name */}
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                {/* Quick Stats */}
+                <div className="flex flex-wrap gap-4">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border border-orange-200 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-yellow-400">
+                    <div className="text-2xl font-bold text-amber-600">{stats.submitted}</div>
+                    <div className="text-sm font-semibold text-slate-800">Pending</div>
+                  </div>
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border border-emerald-200 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-emerald-400">
+                    <div className="text-2xl font-bold text-emerald-600">{stats.accepted}</div>
+                    <div className="text-sm font-semibold text-slate-800">Accepted</div>
+                  </div>
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border border-red-200 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-red-400">
+                    <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
+                    <div className="text-sm font-semibold text-slate-800">Rejected</div>
+                  </div>
                 </div>
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border border-emerald-200 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-emerald-400">
-                  <div className="text-2xl font-bold text-emerald-600">{stats.accepted}</div>
-                  <div className="text-sm font-semibold text-slate-800">Accepted</div>
-                </div>
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border border-red-200 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-red-400">
-                  <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
-                  <div className="text-sm font-semibold text-slate-800">Rejected</div>
+
+                {/* Professor Name/Profile */}
+                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-6 py-4 border border-orange-200 hover:scale-[1.02] transition-all duration-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center shadow-md">
+                      <User className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-slate-800">Professor</p>
+                      <p className="text-xs text-slate-600 truncate max-w-32">{email1}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -159,8 +159,12 @@ export default function StudentDashboard() {
       formData.append("file", file);
       formData.append("professor", selectedProfessor);
 
+      const token = localStorage.getItem('token');
       const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/student/upload`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (uploadRes.data) {

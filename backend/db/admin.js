@@ -31,44 +31,54 @@ console.log(email,password);
       return res.status(400).json({ message: "Please fill all the fields" });
     }
 
- const admin = await model.findOne({ email });
- if (!admin) {
-    // Find user by email
-    const user = await model1.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "User does not exist" });
-    }
-    console.log("jai")
-
-    // Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
+  // First check if it's an admin login
+  const admin = await model.findOne({ email });
+  if (admin) {
+    // Admin login
+    const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    // Generate JWT token
+    // Generate JWT token for admin
     const token = jwt.sign(
-      { email: user.email, role: user.role },
+      { email: admin.email, role: "admin" },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1h" }
     );
-
-    // Send token and role only
-    res.status(200).json({
-      message: "User logged in successfully",
+     console.log(token);
+    return res.status(200).json({
+      message: "Admin logged in successfully",
       token,
-      role: user.role
-    });
-  }else{
-      const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
-    }
-     res.status(200).json({
-      message: "admin logged in successfully",
-      role: admin.role,
+      role:"admin"
     });
   }
+
+  // If not admin, check if it's a regular user
+  const user = await model1.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: "User does not exist" });
+  }
+
+  // Compare password for user
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: "Invalid password" });
+  }
+
+  // Generate JWT token for user
+  const token = jwt.sign(
+    { email: user.email, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  // Send token and role for user
+  res.status(200).json({
+    message: "User logged in successfully",
+    token,
+    role: user.role
+  });
 
   } catch (error) {
     console.error("Login error:", error);
