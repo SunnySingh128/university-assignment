@@ -39,14 +39,15 @@ const getForwardedAssignmentDetails = async (req, res) => {
     console.log("HOD EMAIL 👉", email);
 
     // 1️⃣ Fetch ALL assignments for this HOD
-    const assignments = await Assignment1.find({ hod: email });
+    const assignments = await Assignment1.find({forwardto: email });
 
     if (!assignments.length) {
       return res.status(200).json([]); // ✅ return empty array
     }
 
     // 2️⃣ Check HOD exists
-    const hodUser = await User.findOne({ email }).select("email department role");
+    const hodUser = await User.findOne({ 
+ email }).select("email department role");
 
     if (!hodUser) {
       return res.status(404).json({
@@ -56,7 +57,6 @@ const getForwardedAssignmentDetails = async (req, res) => {
 
     // 3️⃣ Process assignments one by one
     const result = [];
-
     for (const assignment of assignments) {
       // Find professor
       const professorUser = await User.findOne({
@@ -67,7 +67,6 @@ const getForwardedAssignmentDetails = async (req, res) => {
 
       // 4️⃣ Department validation
       if (hodUser.department !== professorUser.department) continue;
-
       // 5️⃣ Push valid assignment
       result.push({
         _id: assignment._id,
