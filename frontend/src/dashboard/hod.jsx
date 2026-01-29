@@ -78,7 +78,7 @@ export default function HODDashboard() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post(`http://localhost:3000/assignments/hod1`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/assignments/hod1`, {
         email: email1
       }, {
         headers: { Authorization: `Bearer ${token}` }
