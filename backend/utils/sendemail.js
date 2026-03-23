@@ -12,7 +12,7 @@ const sendEmail = async (to, subject, text) => {
     let sendSmtpEmail = new Brevo.SendSmtpEmail();
 
     sendSmtpEmail.subject = subject;
-
+console.log("Email Subject:", subject);
     // Convert plain text to nice HTML
     sendSmtpEmail.htmlContent = `
       <div style="font-family:Arial; max-width:600px; margin:auto; background:#f8fafc; padding:20px; border-radius:10px;">
@@ -27,12 +27,13 @@ const sendEmail = async (to, subject, text) => {
       name: "EduFlow",
       email: process.env.EMAIL
     };
-
+    console.log("2");
     sendSmtpEmail.to = [{ email: to }];
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
     console.log("Brevo Email Sent ✔");
   } catch (error) {
+    console.error("Brevo Mail Error:", error);
     console.error("Brevo Mail Error:", error.message);
   }
 };

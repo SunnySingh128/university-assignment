@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+    <script>
+
+        class Circle{
+            constructor(x, y, radius,colour,s){
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.colour = colour;
+                this.dx = s;
+                this.dy = s;
+            }
+            draw(context){
+                context.beginPath();
+                context.strokeStyle = this.colour;
+                context.lineWidth = 5;
+                context.arc(this.x, this.y, this.radius, 0, Math.PI * 2); 
+                context.stroke();
+                context.closePath();
+
+            }
+            update(context){
+                this.x += this.dx;
+                this.y += this.dy;
+                thid.draw(context);
+            }
+        }
+        //rectangle
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        context.fillStyle = "blue";
+        context.fillRect(10, 10, 100, 100);
+        const c1 = new Circle(450, 450, 200, "red");
+        c1.draw(context);
+
+        function updateCircle(){
+            requestAnimationFrame(updateCircle);
+            c1.update(context);
+        }
+        updateCircle();
+
+        // //circle
+        // context.beginPath();
+        // context.strokeStyle = "red";
+        // context.lineWidth = 5;
+        // //xpos, ypos, radius, beginPath,end
+        // context.arc(450, 450, 200, 0, Math.PI * 2); 
+        // context.stroke();
+        // context.closePath();
+
+    </script>
+
+</body>
+</html>

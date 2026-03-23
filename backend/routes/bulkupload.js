@@ -16,8 +16,8 @@ cloudinary.config({
   api_key: '712382633241427', 
   api_secret: 'RMjpwrbP1gspJ2dkjlnf3qCerKY'
 });
-
-router.post("/send-emails", upload.single("file"), async (req, res) => {
+const { authenticateToken } = require('../middleware/auth');
+router.post("/send-emails", authenticateToken,upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -44,6 +44,7 @@ router.post("/send-emails", upload.single("file"), async (req, res) => {
       .on("end", async () => {
 
         for (const user of usersFromCSV) {
+          console.log(user.role);
           const email = user.email?.trim();
           const fullName = user.fullName?.trim();
           const role = user.role?.trim();
