@@ -96,7 +96,7 @@ function App() {
 
     const token = localStorage.getItem('token');
 
-const response = await fetch(`http://localhost:3000/store/register`, {
+const response = await fetch(`${import.meta.env.VITE_API_URL}/store/register`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
