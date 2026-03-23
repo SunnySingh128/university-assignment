@@ -25,7 +25,7 @@ const BulkUploadCsv = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/bulkupload/send-emails', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/bulkupload/send-emails`, {
         method: 'POST',
         body: formData,
         headers: { Authorization: `Bearer ${token}` }
