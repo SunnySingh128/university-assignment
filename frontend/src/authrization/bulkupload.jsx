@@ -24,9 +24,11 @@ const BulkUploadCsv = () => {
     setIsLoading(true);
 
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch('/api/bulkupload/send-emails', {
         method: 'POST',
         body: formData,
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       const data = await response.json();
