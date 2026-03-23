@@ -62,7 +62,11 @@ function App() {
 
   const fetchDepartments = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/fetchdepartment`);
+       const token = localStorage.getItem('token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/fetchdepartment`,
+        {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       const data = await response.json();
       
       console.log('Departments fetched:', data);
@@ -90,11 +94,16 @@ function App() {
         department: formData.department,
       };
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/store/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(registrationData),
-      });
+    const token = localStorage.getItem('token');
+
+const response = await fetch(`http://localhost:3000/store/register`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify(registrationData),
+});
 
       const data = await response.json();
 
